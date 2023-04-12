@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   delMeeting,
   getAllMeetings,
-  loadUser,
 } from "../../features/user/userSlice";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";

@@ -4,8 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   delSchedule,
   getAllSchedules,
-  getSchedules,
-  loadUser,
 } from "../../features/user/userSlice";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
