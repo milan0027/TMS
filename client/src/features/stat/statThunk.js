@@ -21,10 +21,10 @@ export const proStatsThunk = async (_, thunkAPI) => {
   }
 };
 
-export const fraStatsThunk = async (_, thunkAPI) => {
+export const fraStatsThunk = async (obj, thunkAPI) => {
   try {
     //const user = thunkAPI.getState().user.user
-    const resp = await customFetch.get("/api/submit/fraStats");
+    const resp = await customFetch.post("/api/submit/fraStats",obj);
     return resp.data;
   } catch (error) {
     return thunkAPI.rejectWithValue(error.response.data.msg);

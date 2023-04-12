@@ -17,5 +17,5 @@ router.route("/delMeeting").post(delMeeting);
 router.route("/delSchedule").post(delSchedule);
 router.route("/exeStats").get(exeStats);
 router.route("/proStats").get(proStats);
-router.route("/fraStats").get(fraStats);
+router.route("/fraStats").post(fraStats);
 module.exports = router;

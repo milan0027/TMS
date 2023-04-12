@@ -34,8 +34,6 @@ const UserSchema = new Schema({
     ref: 'Meeting'
   }],
   
-
-
 });
 
 const User = mongoose.model("User", UserSchema);

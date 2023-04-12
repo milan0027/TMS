@@ -12,5 +12,8 @@ import Schedules from "./show/schedules.page";
 import Executive from "./stat/executive.page";
 import Project from "./stat/project.page";
 import Fractional from "./stat/fractional.page";
+import AllMeetings from "./show/allmeetings.page";
+import AllSchedules from "./show/allschedules.page";
 export {Home, Dashboard, Login, Register, SharedLayout, LandingPage,
-AddMeeting,AddSchedule, AddProject, Meetings,Schedules,Executive, Fractional, Project};
+AddMeeting,AddSchedule, AddProject, Meetings,Schedules,Executive, Fractional, Project,
+AllMeetings, AllSchedules};

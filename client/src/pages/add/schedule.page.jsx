@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import { Button, Chip, Stack } from "@mui/material";
 import dayjs from "dayjs";
@@ -9,6 +9,7 @@ import { MobileDateTimePicker } from "@mui/x-date-pickers/MobileDateTimePicker";
 import { useDispatch } from "react-redux";
 import { submitMeeting, submitSchedule } from "../../features/user/userSlice";
 import { useNavigate } from "react-router-dom";
+import { setOption } from "../../features/navitem/navitemSlice";
 
 const AddSchedule = () => {
  
@@ -18,6 +19,11 @@ const AddSchedule = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    dispatch(setOption('none'))
+    //eslint-disable-next-line
+  },[])
   const handleChange = (e) => {
     setStart(new Date(e));
     
@@ -39,7 +45,7 @@ const AddSchedule = () => {
   };
   return ( <>
     <h1>Add Schedule</h1>
-      <Stack spacing={2} direction='column'>
+      <Stack spacing={2} direction='column' sx={{marginBottom: '10px'}}>
        
         <TextField
           fullWidth

@@ -3,6 +3,7 @@ import { setOption } from "../../features/navitem/navitemSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
   delSchedule,
+  getAllSchedules,
   getSchedules,
   loadUser,
 } from "../../features/user/userSlice";
@@ -13,20 +14,21 @@ import Typography from "@mui/material/Typography";
 import moment from "moment";
 import Grid from "@mui/material/Grid";
 
-const Schedules = () => {
-  const dispatch = useDispatch();
-  const schedules = useSelector((store) => store.user.schedules);
-  const isSLoading = useSelector((store) => store.user.isSLoading);
-  const user = useSelector((store) => store.user.user);
+
+const AllSchedules = () => {
+
+    const dispatch = useDispatch();
+  const schedules = useSelector((store) => store.user.allSchedules);
+  const isASLoading = useSelector((store) => store.user.isASLoading);
+  const type = useSelector((store) => store.user.type);
   useEffect(() => {
-    dispatch(getSchedules());
-    if (!user) dispatch(loadUser());
-    dispatch(setOption("My Schedules"));
+    dispatch(getAllSchedules());
+    dispatch(setOption("All Schedules"));
   }, []);
   return (
     <>
-      <h1>Schedules</h1>
-      {!isSLoading &&
+      <h1>All Schedules</h1>
+      {!isASLoading &&
         schedules &&
         schedules.map((item) => (
           <Card
@@ -57,7 +59,7 @@ const Schedules = () => {
                 </CardContent>
               </Grid>
               <Grid item xs={6} md={2}>
-                {user && item.creator === user._id && (
+                {type === "sec" && (
                   <Button
                     sx={{ margin: "15px", backgroundColor: "red" }}
                     size='small'
@@ -72,7 +74,8 @@ const Schedules = () => {
           </Card>
         ))}
     </>
-  );
-};
+  
+  )
+}
 
-export default Schedules;
+export default AllSchedules

@@ -18,13 +18,17 @@ import { toast } from "react-toastify";
 
 import {
   addTokenToLocalStorage,
+  addTypeToLocalStorage,
   getTokenFromLocalStorage,
+  getTypeFromLocalStorage,
   removeTokenFromLocalStorage,
+  removeTypeFromLocalStorage,
 } from "../../utils/localStorage";
 
 const initialState = {
   isLoading: false,
   user: null,
+  type: getTypeFromLocalStorage(),
   token: getTokenFromLocalStorage(),
   meetings: null,
   schedules: null,
@@ -89,6 +93,7 @@ const userSlice = createSlice({
     logoutUser: (state) => {
       state.user = null;
       state.token = null;
+      removeTypeFromLocalStorage();
       removeTokenFromLocalStorage();
       toast.success("Logout Successfull");
     },
@@ -98,9 +103,11 @@ const userSlice = createSlice({
       state.isLoading = true;
     },
     [registerUser.fulfilled]: (state, { payload }) => {
-      const { token } = payload;
+      const { token, type } = payload;
       state.isLoading = false;
+      state.type = type;
       state.token = token;
+      addTypeToLocalStorage(type);
       addTokenToLocalStorage(token);
       toast.success(`Registered Succcesfully`);
     },
@@ -112,9 +119,11 @@ const userSlice = createSlice({
       state.isLoading = true;
     },
     [loginUser.fulfilled]: (state, { payload }) => {
-      const { token } = payload;
+      const { token, type } = payload;
       state.isLoading = false;
+      state.type = type;
       state.token = token;
+      addTypeToLocalStorage(type);
       addTokenToLocalStorage(token);
       toast.success(`Logged In Successfully`);
     },
@@ -138,9 +147,8 @@ const userSlice = createSlice({
       toast.success("Submitted");
     },
     [submitMeeting.fulfilled]: (state, { payload }) => {
-      const { user } = payload;
-      state.user = user;
-      toast.success("Added Successfully");
+      const { msg } = payload;
+      toast.success(msg);
     },
     [submitMeeting.rejected]: (state, { payload }) => {
       toast.error(payload);
@@ -159,9 +167,8 @@ const userSlice = createSlice({
       toast.success("Submitted");
     },
     [submitSchedule.fulfilled]: (state, { payload }) => {
-      const { user } = payload;
-      state.user = user;
-      toast.success("Added Successfully");
+      const { msg } = payload;
+      toast.success(msg);
     },
     [submitSchedule.rejected]: (state, { payload }) => {
       toast.error(payload);
@@ -231,14 +238,28 @@ const userSlice = createSlice({
     },
     [delMeeting.fulfilled]: (state, { payload }) => {
       const { common } = payload;
-      state.meetings = state.meetings.filter((item) => item.common !== common);
-      if(state.allMeetings){
-      state.allMeetings = state.allMeetings.filter(
-        (item) => item.common !== common
-      );}
-      state.schedules = state.schedules.filter((item) => item.common!==common);
-      if(state.allSchedules){
-      state.allSchedules = state.allSchedules.filter((item) => item.common!==common);}
+      if (state.meetings) {
+        state.meetings = state.meetings.filter(
+          (item) => item.common !== common
+        );
+      }
+
+      if (state.allMeetings) {
+        state.allMeetings = state.allMeetings.filter(
+          (item) => item.common !== common
+        );
+      }
+      if (state.schedules) {
+        state.schedules = state.schedules.filter(
+          (item) => item.common !== common
+        );
+      }
+
+      if (state.allSchedules) {
+        state.allSchedules = state.allSchedules.filter(
+          (item) => item.common !== common
+        );
+      }
     },
     [delMeeting.rejected]: (state, { payload }) => {
       toast.error(payload);
@@ -248,14 +269,28 @@ const userSlice = createSlice({
     },
     [delSchedule.fulfilled]: (state, { payload }) => {
       const { common } = payload;
-      state.meetings = state.meetings.filter((item) => item.common !== common);
-      if(state.allMeetings)
-      state.allMeetings = state.allMeetings.filter(
-        (item) => item.common !== common
-      );
-      state.schedules = state.schedules.filter((item) => item.common!==common);
-      if(state.allSchedules)
-      state.allSchedules = state.allSchedules.filter((item) => item.common!==common);
+      if (state.meetings) {
+        state.meetings = state.meetings.filter(
+          (item) => item.common !== common
+        );
+      }
+
+      if (state.allMeetings) {
+        state.allMeetings = state.allMeetings.filter(
+          (item) => item.common !== common
+        );
+      }
+      if (state.schedules) {
+        state.schedules = state.schedules.filter(
+          (item) => item.common !== common
+        );
+      }
+
+      if (state.allSchedules) {
+        state.allSchedules = state.allSchedules.filter(
+          (item) => item.common !== common
+        );
+      }
     },
     [delSchedule.rejected]: (state, { payload }) => {
       toast.error(payload);

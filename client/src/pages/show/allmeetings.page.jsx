@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import { setOption } from "../../features/navitem/navitemSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  delSchedule,
-  getSchedules,
+  delMeeting,
+  getAllMeetings,
   loadUser,
 } from "../../features/user/userSlice";
 import Card from "@mui/material/Card";
@@ -13,22 +13,21 @@ import Typography from "@mui/material/Typography";
 import moment from "moment";
 import Grid from "@mui/material/Grid";
 
-const Schedules = () => {
+const AllMeetings = () => {
   const dispatch = useDispatch();
-  const schedules = useSelector((store) => store.user.schedules);
-  const isSLoading = useSelector((store) => store.user.isSLoading);
-  const user = useSelector((store) => store.user.user);
+  const meetings = useSelector((store) => store.user.allMeetings);
+  const isAMLoading = useSelector((store) => store.user.isAMLoading);
+  const type = useSelector((store) => store.user.type);
   useEffect(() => {
-    dispatch(getSchedules());
-    if (!user) dispatch(loadUser());
-    dispatch(setOption("My Schedules"));
+    dispatch(getAllMeetings());
+    dispatch(setOption("All Meetings"));
   }, []);
   return (
     <>
-      <h1>Schedules</h1>
-      {!isSLoading &&
-        schedules &&
-        schedules.map((item) => (
+      <h1>All Meetings</h1>
+      {!isAMLoading &&
+        meetings &&
+        meetings.map((item) => (
           <Card
             key={item._id}
             variant='outlined'
@@ -40,11 +39,15 @@ const Schedules = () => {
                   {/* <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
           Word of the Day
         </Typography> */}
-
-                  <Typography variant='h6' component='div'>
-                    {item.desc}
+                  <Typography variant='h5' component='div'>
+                    {item.name}
+                  </Typography>
+                  <Typography sx={{ mb: 1 }} color='text.secondary'>
+                    {item.venue}
                   </Typography>
                   <Typography variant='body2'>
+                    <b>Project ID : </b> {item.project}
+                    <br />
                     <b>Start : </b>
                     {moment(item.start).format("LLL")}
                     <br />
@@ -53,16 +56,24 @@ const Schedules = () => {
                     <br />
                     <b>Duration : </b>
                     {item.duration / 60000} Mins
+                    <br />
+                    <b>Creator ID: </b>
+                    {item.creator}
+                    <br />
+                    <b>Participants ID: </b>
+                    {item.invited.map((inv) => (
+                      <li key={inv}>{inv}</li>
+                    ))}
                   </Typography>
                 </CardContent>
               </Grid>
               <Grid item xs={6} md={2}>
-                {user && item.creator === user._id && (
+                {type === "sec" && (
                   <Button
                     sx={{ margin: "15px", backgroundColor: "red" }}
                     size='small'
                     variant='contained'
-                    onClick={() => dispatch(delSchedule({ _id: item._id }))}
+                    onClick={() => dispatch(delMeeting({ _id: item._id }))}
                   >
                     Delete
                   </Button>
@@ -75,4 +86,4 @@ const Schedules = () => {
   );
 };
 
-export default Schedules;
+export default AllMeetings;

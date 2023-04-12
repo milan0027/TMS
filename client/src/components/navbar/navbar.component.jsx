@@ -22,6 +22,8 @@ import { logoutUser } from '../../features/user/userSlice';
 const drawerWidth = 240;
 const navItemsAuth = [ {item:'Home', route:'/home'},{item:'My Meetings',
 route:'/meetings'},{item:'My Schedules',route:'/schedules'},{item:'Dashboard', route:'/dashboard'}];
+const navItemsAuth2 = [ {item:'Home', route:'/home'},{item:'All Meetings',
+route:'/allmeetings'},{item:'All Schedules',route:'/allschedules'},{item:'Dashboard', route:'/dashboard'}];
 const navItemsNoAuth = [ {item:'Login', route:'/login'},{item:'Register', route:'/register'}];
 const darkTheme = createTheme({
   palette: {
@@ -37,7 +39,7 @@ function DrawerAppBar(props) {
   
   const dispatch = useDispatch();
   const token = useSelector((store) => store.user.token);
-
+  const type = useSelector((store) => store.user.type);
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
@@ -49,9 +51,11 @@ function DrawerAppBar(props) {
       </Typography>
       <Divider />
       <List>
-        {token ? <>{navItemsAuth.map((item) => (
+        {token ? <>{type==='exe'?<>{navItemsAuth.map((item) => (
           <ListItemComponent {...item} key={item.item}/>
-        ))}
+        ))}</>:<>{navItemsAuth2.map((item) => (
+          <ListItemComponent {...item} key={item.item}/>
+        ))}</>}
         <ListItem key={'logout'} disablePadding>
             <ListItemButton onClick={()=>dispatch(logoutUser())}>
               <ListItemText primary="Logout" />
@@ -89,9 +93,11 @@ function DrawerAppBar(props) {
              TMS
           </Typography>
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-            {token?<>{navItemsAuth.map((item) => (
+            {token?<>{type==='exe'?<>{navItemsAuth.map((item) => (
               <ButtonItem {...item} key={item.item}/>
-            ))} 
+            ))}</>:<>{navItemsAuth2.map((item) => (
+              <ButtonItem {...item} key={item.item}/>
+            ))}</> }
             <Button sx={{ color: '#fff'}} onClick={()=>dispatch(logoutUser())}>
             Logout
           </Button>

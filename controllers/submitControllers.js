@@ -28,7 +28,15 @@ const meeting = async(req,res) => {
         return res.status(400).send({ msg: "Invalid Project" });
         
         const common = uuid();
-        const meeting = await Meeting.create({...req.body,common,
+        const meeting = await Meeting.create({name: req.body.name,
+            venue:req.body.venue,
+            purpose: req.body.purpose,
+            project: req.body.project,
+            start: req.body.start,
+            end: req.body.end,
+            duration: req.body.duration,
+            common,
+            invited:[...req.body.invited,userId],
             creator: userId});
        // console.log(meeting)
         const schedule = await Schedule.create({
@@ -39,10 +47,8 @@ const meeting = async(req,res) => {
             common,
             creator: userId,
         })
-        const user = await User.findById(userId);
-        user.meetings.unshift(meeting);
-        user.schedules.unshift(schedule);
-        await user.save();
+        
+
          
        
         //user code
@@ -50,7 +56,7 @@ const meeting = async(req,res) => {
         await project.save();
         
         
-        req.body.invited.forEach(async (item) => {
+        meeting.invited.forEach(async (item) => {
             const inv = await User.findById(item);
             if(inv){
                 inv.meetings.unshift(meeting);
@@ -59,7 +65,7 @@ const meeting = async(req,res) => {
             }
         })
 
-        return res.status(200).json({user});
+        return res.status(200).json({msg:`Meeting Created ID:${meeting._id}`});
 
 
     }catch(e){
@@ -98,7 +104,7 @@ const schedule = async(req,res) => {
         user.schedules.unshift(schedule);
         await user.save();
         //user code
-        return res.status(200).json({user});
+        return res.status(200).json({msg:`Schedule Created ID:${schedule._id}`});
     }catch(e){
         console.log(e)
         return res.status(400).send({ msg: "Server Error" });
@@ -214,7 +220,21 @@ const proStats = async(req,res) => {
 
 const fraStats = async(req,res) => {
     try{
-        const resp = await Project.find({}).populate("meetings");
+        const {start,end} = req.body;
+        const users = await User.find({type:'exe'}).populate("meetings")
+        const resp = users.map((user) => {
+            const timer= user.meetings.reduce((total,meet) =>{
+              //  console.log(Math.max(start,(new Date(meet.end)).getTime()))
+                return total+Math.max(Math.min(end,(new Date(meet.end)).getTime())-Math.max(start,(new Date(meet.start)).getTime()),0)
+            }
+           ,0);
+            return {
+                _id: user._id,
+                name: user.username,
+                frac: timer/(end-start),
+            }
+        })
+        //console.log(resp)
         return res.status(200).json({resp});
     }catch(e){
         console.log(e)

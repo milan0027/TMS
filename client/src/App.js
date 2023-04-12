@@ -3,7 +3,7 @@ import { Container, CssBaseline } from "@mui/material";
 import { ToastContainer } from "react-toastify";
 import Box from "@mui/material/Box";
 import { ProtectedRoutes, Navbar, Footer } from "./components";
-import { Login, Register, Dashboard, SharedLayout, LandingPage, Home, AddMeeting, AddProject, AddSchedule, Meetings, Schedules, Project, Executive, Fractional } from "./pages";
+import { Login, Register, Dashboard, SharedLayout, LandingPage, Home, AddMeeting, AddProject, AddSchedule, Meetings, Schedules, Project, Executive, Fractional, AllMeetings, AllSchedules } from "./pages";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
@@ -34,9 +34,12 @@ function App() {
               <Route path="/addschedule" element={<AddSchedule/>} />
               <Route path="/meetings" element={<Meetings/>}/>
               <Route path="/schedules" element={<Schedules/>}/>
+
               <Route path="/prostat" element={<Project/>}/>
               <Route path="/exestat" element={<Executive/>}/>
               <Route path="/frastat" element={<Fractional/>}/>
+              <Route path="/allmeetings" element={<AllMeetings/>}/>
+              <Route path="/allschedules" element={<AllSchedules/>}/>
               {/* <Route path="/dashboard" element={<Dashboard />} /> */}
             </Route>
 

@@ -30,6 +30,7 @@ const register = async (req, res) => {
       type,
       password: hashedPassword,
     });
+    
 
     // creating json web token to store in frontend
     const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, {
@@ -37,7 +38,7 @@ const register = async (req, res) => {
     });
 
     res.status(200).json({
-      token,
+      token,type
     });
   } catch (error) {
     return res.status(400).send({ msg: "Server Error" });
@@ -56,12 +57,12 @@ const login = async (req, res) => {
     if (!isPasswordCorrect) {
       return res.status(400).send({ msg: "Invalid Credentials" });
     }
-
+    const type = resp.type;
     const token = jwt.sign({ userId: resp._id }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_LIFETIME,
     });
     res.status(200).json({
-      token,
+      token, type
     });
   } catch (error) {
     return res.status(400).send({ msg: "Server Error" });

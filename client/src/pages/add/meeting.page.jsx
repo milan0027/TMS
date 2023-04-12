@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import { Button, Chip, Stack } from "@mui/material";
 import dayjs from "dayjs";
@@ -9,6 +9,7 @@ import { MobileDateTimePicker } from "@mui/x-date-pickers/MobileDateTimePicker";
 import { useDispatch } from "react-redux";
 import { submitMeeting } from "../../features/user/userSlice";
 import { useNavigate } from "react-router-dom";
+import { setOption } from "../../features/navitem/navitemSlice";
 
 const AddMeeting = () => {
   const [name, setName] = useState("");
@@ -22,6 +23,11 @@ const AddMeeting = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+ 
+  useEffect(() => {
+    dispatch(setOption('none'))
+    //eslint-disable-next-line
+  },[])
   const handleChange = (e) => {
     setStart(new Date(e));
     
@@ -49,7 +55,7 @@ const AddMeeting = () => {
   return (
     <>
       <h1>Add Meeting</h1>
-      <Stack spacing={2} direction='column'>
+      <Stack spacing={2} direction='column' sx={{marginBottom: '10px'}}>
         <TextField
           fullWidth
           id='outlined-basic1'
@@ -108,7 +114,7 @@ const AddMeeting = () => {
             fullWidth
             type='email'
             id='outlined-basic6'
-            label='EMail of Attendees'
+            label='ID of Attendees'
             variant='outlined'
             value={attendee}
             onChange={(e) => setAttendee(e.target.value)}
